@@ -14,7 +14,7 @@ ExecStart={{ prometheus_sw_dir }}/latest/prometheus \
   --storage.tsdb.path={{ prometheus_data_dir }} \
   --storage.tsdb.retention.time=90d \
   --storage.tsdb.retention.size=70GB \
-  --web.listen-address=10.244.105.211:10443 \
+  --web.listen-address=192.168.200.60:10443 \
   --web.external-url= \
   --web.enable-admin-api
 
