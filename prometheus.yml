@@ -2,8 +2,8 @@
 - hosts: "{{ host_name }}"
   become: yes
   vars_files:
-    - "vars/system/common/prometheus-exporter.yml"
-    - "vars/system/common/prometheus-exporter-{{ os_type }}.yml"
+    - "vars/system/common/prometheus.yml"
+    - "vars/system/common/prometheus-{{ os_type }}.yml"
   #  - "vars/system/{{ os_type }}/{{ sys }}.yml"
   #  - "vars/vault/vault_token.yml"
   pre_tasks:
