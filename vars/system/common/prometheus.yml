@@ -10,7 +10,7 @@ prometheus_artifactid: "prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
 
 prometheus_backup_name: "prometheus-{{ prometheus_version }}-{{ timestamp }}"
 
-cd_account: "root"
+cd_account: "itadmin"
 
 keep_previous: 3
 
