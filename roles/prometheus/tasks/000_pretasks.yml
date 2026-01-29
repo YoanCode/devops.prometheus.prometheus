@@ -41,4 +41,4 @@
         tasks_from: "linux/first_deploy.yml"
       vars:
         backup_readme_path: "{{ prometheus_backup_dir }}"
-        softlink_readme_path: "{{ prometheus_sw_dir }}"
+        symlink_readme_path: "{{ prometheus_sw_dir }}"
