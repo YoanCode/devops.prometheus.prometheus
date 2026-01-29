@@ -1,0 +1,40 @@
+#########################################################################
+# Parameters
+#########################################################################
+# softlink_path: path of softlink
+# gd_image_dest_path: target path to unarchive
+# softlink_readme_file: file path of .latest_softlink_path
+#########################################################################
+
+- name: Get original symlink's status
+  ansible.builtin.stat:
+    path: "{{ softlink_path }}"
+  register: previous_softlink_path
+
+- name: Print original softlink_path
+  ansible.builtin.debug:
+    msg: "{{ previous_softlink_path.stat.lnk_target }}"
+  when: previous_softlink_path.stat.islnk is defined and previous_softlink_path.stat.islnk
+
+- name: Generate .latest_softlink_path to record softlink path
+  include_tasks: "linux/replace_readme.yml"
+  vars:
+    deploy_path: "{{ previous_softlink_path.stat.lnk_target }}"
+    source_file: ".latest_softlink_path.j2"
+    dest_file: "{{ softlink_readme_file }}"
+    user: "{{ prometheus }}"
+  when: previous_softlink_path.stat.islnk is defined and previous_softlink_path.stat.islnk
+
+- name: Remove original symlink - {{ softlink_path }}
+  ansible.builtin.file:
+    path: "{{ softlink_path }}"
+    state: absent
+
+- name: softlink link {{ softlink_path }} to {{ gd_image_dest_path }}
+  ansible.builtin.file:
+    src: "{{ gd_image_dest_path }}"
+    dest: "{{ softlink_path }}"
+    state: link
+    owner: "{{ prometheus.user }}"
+    group: "{{ prometheus.group }}"
+    force: yes

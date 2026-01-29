@@ -1,0 +1,39 @@
+env: "stg"
+sys: "obs"
+
+gv_sw_dir: "/opt/test/sw"
+gv_apps_dir: "/opt/test/apps"
+gv_backup_dir: "/opt/test/backup"
+gv_rollback_dir: "/opt/test/rollback"
+gv_logs_dir: "/opt/test/logs"
+gv_data_dir: "/opt/test/data"
+gv_shared_dir: "/opt/test/shared"
+gv_tmp_dir: "/opt/test/tmp"
+
+
+prometheus_sw_dir: "{{ gv_sw_dir }}/prometheus"
+prometheus_backup_dir: "{{ gv_backup_dir }}/prometheus"
+prometheus_rollback_dir: "{{ gv_rollback_dir }}/prometheus"
+prometheus_data_dir: "{{ gv_data_dir }}/prometheus"
+prometheus_config_dir: "{{ prometheus_sw_dir }}/config"
+prometheus_rule_dir: "{{ prometheus_sw_dir }}/rules"
+prometheus_target_dir: "{{ prometheus_sw_dir }}/targets"
+
+
+prometheus_service: "line.app.{{ 'prd' if env in ['dr'] else env }}{{ sys }}_prometheus.service"
+
+
+# ========== os-account ==========
+prometheus:
+  user: "prometheus"
+  user_id: 11003
+  group: "prometheus"
+  group_id: 11003
+  user_home: "/home/prometheus"
+  nofile: 65535
+  nproc: 65535
+
+
+
+
+

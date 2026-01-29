@@ -1,0 +1,38 @@
+#########################################################################
+# parameters
+# softlink_readme_path: path of readme
+# backup_readme_path: path of backup readme
+# softlink_readme_path: path of latest softlink path
+#########################################################################
+
+
+
+
+
+- name: Check if {{ backup_readme_path }}/.latest_backup exists
+  ansible.builtin.stat:
+    path: "{{ backup_readme_path }}/.latest_backup"
+  register: file_stat
+
+- name: Replace .latest_backup
+  include_tasks: "linux/replace_readme.yml"
+  vars:
+    backup_path: "symlink"
+    source_file: ".latest_backup.j2"
+    dest_file: "{{ backup_readme_path }}/.latest_backup"
+    user: "{{ prometheus }}"
+  when: not file_stat.stat.exists
+
+- name: Check if {{ softlink_readme_path }}/.latest_softlink_path exists
+  ansible.builtin.stat:
+    path: "{{ backup_readme_path }}/.latest_softlink_path"
+  register: file_stat
+
+- name: Replace .latest_softlink_path
+  include_tasks: "linux/replace_readme.yml"
+  vars:
+    deploy_path: "{{ softlink_readme_path }}/0.0.0"
+    source_file: ".latest_softlink_path.j2"
+    dest_file: "{{ softlink_readme_path }}/.latest_softlink_path"
+    user: "{{ prometheus }}"
+  when: not file_stat.stat.exists

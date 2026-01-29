@@ -1,0 +1,7 @@
+- name: Generate {{ dest_file }}
+  template:
+    src: "{{ source_file }}"
+    dest: "{{ dest_file }}"
+    owner: "{{ user.user }}"
+    group: "{{ user.group }}"
+    mode: 0644

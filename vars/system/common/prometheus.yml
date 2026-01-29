@@ -1,0 +1,17 @@
+---
+gv_repo_url_default: "/tmp"
+gv_repo_url_prd: "/tmp"
+
+timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
+
+prometheus_version: "3.5.1"
+
+prometheus_artifactid: "prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+
+prometheus_backup_name: "prometheus-{{ prometheus_version }}-{{ timestamp }}"
+
+cd_account: "root"
+
+keep_previous: 3
+
+prometheus_installation: true

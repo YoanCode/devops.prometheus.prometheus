@@ -1,0 +1,63 @@
+---
+
+- name: Backup original vars_files
+  block:
+    - name: Check does folder empty before proceeding
+      shell: "ls {{ backup_src }} | wc -l"
+      register: filesFound
+
+    - name: DEBUG - Show found files
+      ansible.builtin.debug:
+        var: filesFound
+
+    - name: Set variable
+      set_fact:
+        backup_fullpath: "{{ backup_dest }}/{{ backup_name }}"
+        backup_path: "{% if filesFound.stdout | int > 0 %}{{ backup_dest }}/{{ backup_name }}{% else %}symlink{% endif %}"
+
+    - name: Create backup derectories
+      include_tasks: "linux/create_directories.yml"
+      vars:
+        user: "{{ backup_user }}"
+        permission: "755"
+        directory_list:
+          - "{{ backup_fullpath }}"
+      when: filesFound.stdout | int > 0
+    
+    - name: Backup files
+      shell: "ls -d {{ backup_src }}/*"
+      register: folder_list
+      when: filesFound.stdout | int > 0
+    
+    - name: Backup files
+      shell: "mv {{ item }} {{ backup_fullpath }}"
+      loop: "{{ folder_list.stdout_lines }}"
+      when: filesFound.stdout | int > 0
+
+    - name: Generate .latest_backup
+      include_tasks: "linux/replace_readme.yml"
+      vars:
+        source_file: ".latest_backup.j2"
+        dest_file: "{{ backup_dest }}/.latest_backup"
+        user: "{{ prometheus }}"
+
+    - name: Find all backup directories in the destination directory
+      ansible.builtin.find:
+        paths: "{{ backup_dest }}"
+        patterns: "*"
+        file_type: directory
+      register: backup_files_found
+
+    - name: DEBUG - Show found files
+      ansible.builtin.debug:
+        var: backup_files_found
+
+    - name: DEBUG - Show files to be deleted
+      ansible.builtin.debug:
+        msg: "{{ (backup_files_found.files | sort(attribute='mtime', reverse=true))[keep_previous | default(5):] }}"
+
+    - name: Remove old backups, keeping the {{ keep_previous | default(5) }} newest ones
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ (backup_files_found.files | sort(attribute='mtime', reverse=true))[keep_previous | default(5):] }}"

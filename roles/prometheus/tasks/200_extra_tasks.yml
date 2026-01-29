@@ -1,0 +1,12 @@
+---
+
+- name: Tasks after installation
+  tags:
+  - extra-tasks
+  block:
+    - name: Register service
+      include_role:
+        name: common
+        tasks_from: linux/control_service_prometheus.yml
+      
+  become: yes

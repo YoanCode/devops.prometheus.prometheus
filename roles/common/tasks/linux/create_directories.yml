@@ -1,0 +1,9 @@
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user.user }}"
+    group: "{{ user.group }}"
+    mode: "{{ permission }}"
+  with_items:
+    - "{{ directory_list }}"

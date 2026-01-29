@@ -1,0 +1,16 @@
+- name: Control prometheus.service
+  block:
+    - name: Copy prometheus.service
+      template:
+        src: "service/prometheus.service.j2"
+        dest: "/usr/lib/systemd/system/line.app.{{ env }}{{ sys }}_prometheus.service"
+        owner: "root"
+        group: "root"
+        mode: 0644
+
+    - name: Restart {{ prometheus_service }}
+      systemd:
+        name: "{{ prometheus_service }}"
+        daemon_reload: true
+        enabled: true
+        state: "restarted"

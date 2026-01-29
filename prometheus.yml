@@ -1,0 +1,20 @@
+---
+- hosts: "{{ host_name }}"
+  become: yes
+  vars_files:
+    - "vars/system/common/prometheus-exporter.yml"
+    - "vars/system/common/prometheus-exporter-{{ os_type }}.yml"
+  #  - "vars/system/{{ os_type }}/{{ sys }}.yml"
+  #  - "vars/vault/vault_token.yml"
+  pre_tasks:
+    - set_fact:
+        gv_repo_url: "{{ gv_repo_url_prd if env in ['prd', 'dr'] else gv_repo_url_default }}"
+
+  roles:
+    - name: linux
+      role: "prometheus"
+      when:
+        - prometheus_installation
+        - os_type in ['linux']
+        - prometheus_installation | default(false) | bool == true
+

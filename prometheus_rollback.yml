@@ -1,0 +1,10 @@
+---
+- hosts: "{{ host_name }}"
+  become: yes
+  vars_files:
+    - "vars/system/common/prometheus.yml"
+    - "vars/system/common/prometheus-{{ os_type }}.yml"
+
+  roles:
+    - name: Rollback
+      role: "rollback"

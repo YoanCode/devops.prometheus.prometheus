@@ -1,0 +1,6 @@
+---
+
+
+- name: Rollback prometheus
+  include_tasks: "100_rollback_prometheus.yml"
+  tags: always

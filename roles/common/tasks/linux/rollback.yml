@@ -1,0 +1,30 @@
+#########################################################################
+# Parameters
+#########################################################################
+# backup_readme_file: file path of .latest_backup
+# softlink_readme_file: file path of .latest_softlink_path
+# softlink_path: path of softlink
+# rollback_src: source path
+# rollback_dest: destination path
+#########################################################################
+
+- name: Read .latest_backup
+  ansible.builtin.command: "cat {{ backup_readme_file }}"
+  register: latest_backup
+  changed_when: false
+
+- name: Rollback softlink
+  include_role:
+    name: Common
+    tasks_from: "linux/rollback_softlink.yml"
+  when: latest_backup.stdout_lines[0] == 'symlink'
+
+- name: Rollback backup
+  include_role:
+    name: Common
+    tasks_from: "linux/rollback_backup.yml"
+  vars:
+    src_path: "{{ rollback_src }}"
+    dst_path: "{{ rollback_dst }}"
+    backup_src: "{{ latest_backup.stdout_lines[0] }}"
+  when: latest_backup.stdout_lines[0] != 'symlink'

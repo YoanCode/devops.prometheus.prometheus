@@ -1,0 +1,22 @@
+[Unit]
+Description=Prometheus
+After=syslog.target network.target
+
+[Service]
+Type=simple
+Restart=always
+User={{ prometheus.user }}
+Group={{ prometheus.group }}
+LimitNOFILE={{ prometheus.nofile }}
+LimitNPROC={{ prometheus.nproc }}
+ExecStart={{ prometheus_sw_dir }}/latest/prometheus \
+  --config.file={{ prometheus_config_dir }}/prometheus.yml \
+  --storage.tsdb.path={{ prometheus_data_dir }} \
+  --storage.tsdb.retention.time=90d \
+  --storage.tsdb.retention.size=70GB \
+  --web.listen-address=10.244.105.211:10443 \
+  --web.external-url= \
+  --web.enable-admin-api
+
+[Install]
+WantedBy=multi-user.target

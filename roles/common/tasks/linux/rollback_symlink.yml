@@ -1,0 +1,17 @@
+#########################################################################
+# Parameters
+#########################################################################
+# softlink_readme_file: file path of .latest_softlink_path
+# softlink_path: path of softlink
+#########################################################################
+
+- name: Read {{ softlink_readme_file }}
+  ansible.builtin.command: "cat {{ softlink_readme_file }}"
+  register: latest_softlink
+  changed_when: false
+  become: yes
+
+- name: Rollback softlink to {{ latest_softlink.stdout_lines[0] }}
+  include_tasks: "linux/replace_softlink.yml"
+  vars:
+    gd_image_dest_path: "{{ latest_softlink.stdout_lines[0] }}"

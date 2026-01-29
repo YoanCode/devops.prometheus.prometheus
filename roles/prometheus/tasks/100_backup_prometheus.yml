@@ -1,0 +1,17 @@
+---
+
+- tags:
+  - backup
+  block:
+    - name: Backup {{ backup_src }} to {{ backup_dest }}
+      include_role:
+        name: common
+        tasks_from: linux/backup.yml
+      vars:
+        backup_src: "{{ prometheus_sw_dir }}/prometheus-{{ prometheus_version }}.linux-amd64"
+        backup_dest: "{{ prometheus_backup_dir }}"
+        backup_name: "{{ prometheus_backup_name }}"
+        backup_user: "{{ prometheus }}"
+  
+  become: yes
+  become_user: prometheus

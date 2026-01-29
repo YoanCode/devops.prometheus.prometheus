@@ -1,0 +1,44 @@
+---
+
+- tags: 
+  - pretasks
+  block:
+    - name: Create gorup and user
+      include_role:
+        name: common
+        tasks_from: "linux/account.yml"
+      vars:
+        user_list: "{{ prometheus }}"
+    - name: create base & logs directory
+      include_role:
+        name: common
+        tasks_from: "linux/create_directories.yml"
+      vars:
+        user: "{{ prometheus }}"
+        permission: "755"
+        directory_list:
+          - "{{ prometheus_sw_dir }}"
+          - "{{ prometheus_rollback_dir }}"
+          - "{{ prometheus_data_dir }}"
+
+    - name: pretask to create backup & version directory_list
+      include_role:
+        name: common
+        tasks_from: "linux/create_directories.yml"
+      vars:
+        user: "{{ prometheus }}"
+        permission: "755"
+        directory_list:
+          - "{{ prometheus_backup_dir }}"
+          - "{{ prometheus_config_dir }}"
+          - "{{ prometheus_rule_dir }}"
+          - "{{ prometheus_target_dir }}"
+          - "{{ prometheus_sw_dir }}/prometheus-{{ prometheus_version }}.linux-amd64"
+
+    - name: first deploy init
+      include_role:
+        name: common
+        tasks_from: "linux/first_deploy.yml"
+      vars:
+        backup_readme_path: "{{ node_exporter_backup_dir }}"
+        softlink_readme_path: "{{ node_exporter_sw_dir }}"

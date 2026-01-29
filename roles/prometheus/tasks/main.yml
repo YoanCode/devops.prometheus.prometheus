@@ -1,0 +1,24 @@
+---
+
+- name: Pretasks before installing node_exporter
+  include_tasks: "000_pretasks.yml"
+  tags: always
+
+- name: Backup prometheus
+  include_tasks: "100_backup_prometheus.yml"
+  tags: always
+
+- name: Deploy prometheus
+  include_tasks: "101_deploy_prometheus.yml"
+  tags: always
+
+- name: Symlink
+  include_tasks: "103_symlink_prometheus.yml"
+  tags: always
+
+- name: Extra tasks after installation
+  include_tasks: "200_extra_tasks.yml"
+  tags: always
+
+
+  

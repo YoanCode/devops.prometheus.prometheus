@@ -1,0 +1,28 @@
+- name: Download, extract and deploy
+  block:
+    - name: Copy golden image from local tmp to remote
+      copy:
+        src: "{{ gd_image_url }}"
+        dest: "{{ gd_image_path }}"
+        owner: "{{ user.user }}"
+        group: "{{ user.group }}"
+        mode: 0755
+      become: yes
+      become_user: "root"
+
+    - name: Extract golden image
+      unarchive:
+        src: "{{ gd_image_path }}"
+        dest: "{{ gd_image_dest_path }}"
+        remote_src: yes
+        owner: "{{ user.user }}"
+        mode: 0755
+      become_user: "root"
+
+    - name: Remove local golden image
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ gd_image_url }}"
+      delegate_to: localhost

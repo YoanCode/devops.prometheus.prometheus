@@ -1,0 +1,25 @@
+- name: Create group and user
+  block:
+    - name: Create user group
+      group:
+        name: "{{ item.group }}"
+        state: present
+        system: yes
+        gid: "{{ item.group_id }}"
+      with_items:
+        - "{{ user_list }}"
+      
+
+    - name: Create nologin user
+      user:
+        name: "{{ item.user }}"
+        comment: "{{ item.user }} user"
+        uid: "{{ item.user_id }}"
+        group: "{{ item.group }}"
+        home: "{{ item.user_home }}"
+        shell: "/bin/bash"
+      with_items:
+        - "{{ user_list }}"
+    
+  
+  become: yes

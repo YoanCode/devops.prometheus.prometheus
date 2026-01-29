@@ -1,0 +1,36 @@
+#########################################################################
+# parameters
+#########################################################################
+# src_path: source path
+# dst_path: destination path
+# backup_src: backup source path
+#########################################################################
+
+- name: Create rollback directories
+  include_tasks: "linux/create_directories.yml"
+  vars:
+    directory_list:
+      - "{{ dst_path }}"
+    user: "{{ prometheus }}"
+    permission: "755"
+
+- name: "Copy contents of {{ src_path }} to {{ dst_path }}"
+  ansible.builtin.copy:
+    src: "{{ src_path }}/"
+    dest: "{{ dst_path }}"
+    remote_src: yes
+    owner: "{{ prometheus.user }}"
+    group: "{{ prometheus.group }}"
+
+- name: "Remove original source directory {{ src_path }}"
+  ansible.builtin.file:
+    path: "{{ src_path }}"
+    state: absent
+
+- name: "Copy backup folder from {{ backup_src }} to {{ src_path }}"
+  ansible.builtin.copy:
+    src: "{{ backup_src }}/"
+    dest: "{{ src_path }}"
+    remote_src: yes
+    owner: "{{ prometheus.user }}"
+    group: "{{ prometheus.group }}"
