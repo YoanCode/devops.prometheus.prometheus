@@ -1,9 +1,9 @@
 #########################################################################
 # Parameters
 #########################################################################
-# softlink_path: path of softlink
+# symlink_path: path of symlink
 # gd_image_dest_path: target path to unarchive
-# softlink_readme_file: file path of .latest_softlink_path
+# symlink_readme_file: file path of .latest_symlink_path
 #########################################################################
 
 - name: Get original symlink's status
@@ -16,12 +16,12 @@
     msg: "{{ previous_symlink_path.stat.lnk_target }}"
   when: previous_symlink_path.stat.islnk is defined and previous_symlink_path.stat.islnk
 
-- name: Generate .latest_softlink_path to record softlink path
+- name: Generate .latest_symlink_path to record symlink path
   include_tasks: "linux/replace_readme.yml"
   vars:
     deploy_path: "{{ previous_symlink_path.stat.lnk_target }}"
-    source_file: ".latest_softlink_path.j2"
-    dest_file: "{{ softlink_readme_file }}"
+    source_file: ".latest_symlink_path.j2"
+    dest_file: "{{ symlink_readme_file }}"
     user: "{{ prometheus }}"
   when: previous_symlink_path.stat.islnk is defined and previous_symlink_path.stat.islnk
 - name: Remove original symlink - {{ symlink_path }}
