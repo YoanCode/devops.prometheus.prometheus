@@ -23,16 +23,16 @@
     user: "{{ prometheus }}"
   when: not file_stat.stat.exists
 
-- name: Check if {{ softlink_readme_path }}/.latest_softlink_path exists
+- name: Check if {{ symlink_readme_path }}/.latest_symlink_path exists
   ansible.builtin.stat:
-    path: "{{ backup_readme_path }}/.latest_softlink_path"
+    path: "{{ symlink_readme_path }}/.latest_symlink_path"
   register: file_stat
 
-- name: Replace .latest_softlink_path
+- name: Replace .latest_symlink_path
   include_tasks: "linux/replace_readme.yml"
   vars:
-    deploy_path: "{{ softlink_readme_path }}/0.0.0"
-    source_file: ".latest_softlink_path.j2"
-    dest_file: "{{ softlink_readme_path }}/.latest_softlink_path"
+    deploy_path: "{{ symlink_readme_path }}/0.0.0"
+    source_file: ".latest_symlink_path.j2"
+    dest_file: "{{ symlink_readme_path }}/.latest_symlink_path"
     user: "{{ prometheus }}"
   when: not file_stat.stat.exists
