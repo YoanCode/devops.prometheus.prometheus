@@ -1,6 +1,6 @@
 ---
-gv_repo_url_default: "http://192.168.200.30:8080/repo"
-gv_repo_url_prd: "http://192.168.200.30:8080/repo"
+gv_repo_url_default: "/tmp"
+gv_repo_url_prd: "/tmp"
 
 timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
 

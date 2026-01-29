@@ -9,7 +9,7 @@
         tasks_from: linux/download_deploy.yml
       vars:
         gd_image_url: "{{ gv_repo_url }}/{{ prometheus_artifactid }}"
-        gd_image_path: "{{ prometheus_sw_dir }}/prometheus-{{ prometheus_version }}.linux-amd64"
+        gd_image_path: "{{ prometheus_sw_dir }}/{{ prometheus_artifactid }}"
         gd_image_dest_path: "{{ prometheus_sw_dir }}"
         user: "{{ prometheus }}"
 
