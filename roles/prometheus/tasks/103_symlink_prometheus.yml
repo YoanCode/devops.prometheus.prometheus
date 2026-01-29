@@ -6,9 +6,9 @@
         name: common
         tasks_from: "linux/replace_symlink.yml"
       vars:
-        softlink_path: "{{ prometheus_sw_dir }}/latest"
+        symlink_path: "{{ prometheus_sw_dir }}/latest"
         gd_image_dest_path: "{{ prometheus_sw_dir }}/prometheus-{{ prometheus_version }}.linux-amd64"
-        softlink_readme_file: "{{ prometheus_sw_dir }}/.latest_symlink_path"
+        symlink_readme_file: "{{ prometheus_sw_dir }}/.latest_symlink_path"
         user: "{{ prometheus }}"
 
 

@@ -5,13 +5,13 @@
 # softlink_path: path of softlink
 #########################################################################
 
-- name: Read {{ softlink_readme_file }}
-  ansible.builtin.command: "cat {{ softlink_readme_file }}"
-  register: latest_softlink
+- name: Read {{ symlink_readme_file }}
+  ansible.builtin.command: "cat {{ symlink_readme_file }}"
+  register: latest_symlink
   changed_when: false
   become: yes
 
-- name: Rollback softlink to {{ latest_softlink.stdout_lines[0] }}
-  include_tasks: "linux/replace_softlink.yml"
+- name: Rollback symlink to {{ latest_symlink.stdout_lines[0] }}
+  include_tasks: "linux/replace_symlink.yml"
   vars:
-    gd_image_dest_path: "{{ latest_softlink.stdout_lines[0] }}"
+    gd_image_dest_path: "{{ latest_symlink.stdout_lines[0] }}"
