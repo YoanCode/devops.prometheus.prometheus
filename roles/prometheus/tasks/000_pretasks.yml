@@ -40,5 +40,5 @@
         name: common
         tasks_from: "linux/first_deploy.yml"
       vars:
-        backup_readme_path: "{{ node_exporter_backup_dir }}"
-        softlink_readme_path: "{{ node_exporter_sw_dir }}"
+        backup_readme_path: "{{ prometheus_backup_dir }}"
+        softlink_readme_path: "{{ prometheus_sw_dir }}"
