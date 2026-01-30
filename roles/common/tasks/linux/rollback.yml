@@ -13,10 +13,10 @@
   register: latest_backup
   changed_when: false
 
-- name: Rollback softlink
+- name: Rollback symlink
   include_role:
     name: Common
-    tasks_from: "linux/rollback_softlink.yml"
+    tasks_from: "linux/rollback_symlink.yml"
   when: latest_backup.stdout_lines[0] == 'symlink'
 
 - name: Rollback backup

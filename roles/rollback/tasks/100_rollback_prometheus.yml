@@ -6,14 +6,14 @@
 - tags:
     - rollback
   block:
-    - name: Rollback softlink
+    - name: Rollback symlink
       include_role:
         name: Common
         tasks_from: "linux/rollback.yml"
       vars:
         backup_readme_file: "{{ prometheus_backup_dir }}/.latest_backup"
-        softlink_readme_file: "{{ prometheus_sw_dir }}/.latest_softlink_path"
-        softlink_path: "{{ prometheus_sw_dir }}/latest"
+        symlink_readme_file: "{{ prometheus_sw_dir }}/.latest_symlink_path"
+        symlink_path: "{{ prometheus_sw_dir }}/latest"
         rollback_src: "{{ prometheus_sw_dir }}/prometheus-{{ prometheus_version }}.linux-amd64"
         rollback_dst: "{{ prometheus_rollback_dir }}/prometheus-{{ prometheus_version }}.linux-amd64"
 
