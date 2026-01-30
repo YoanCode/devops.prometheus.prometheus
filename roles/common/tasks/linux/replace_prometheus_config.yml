@@ -1,5 +1,10 @@
 ---
 
+- name: Check if Prometheus config file exists
+  stat:
+    path: "{{ prometheus_config_dir }}/prometheus.yml"
+  register: prometheus_config_stat
+
 - name: Configure Prometheus main configuration file
   template:
     src: "prometheus/prometheus.yml.j2"
@@ -9,3 +14,4 @@
     mode: "0644"
   become: yes
   become_user: prometheus
+  when: not prometheus_config_stat.stat.exists
