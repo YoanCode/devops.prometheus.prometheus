@@ -12,6 +12,10 @@
   include_tasks: "101_deploy_prometheus.yml"
   tags: always
 
+- name: Configure prometheus
+  include_tasks: "102_config_prometheus.yml"
+  tags: always
+
 - name: Symlink
   include_tasks: "103_symlink_prometheus.yml"
   tags: always

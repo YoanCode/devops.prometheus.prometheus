@@ -6,7 +6,7 @@ gv_apps_dir: "/opt/test/apps"
 gv_backup_dir: "/opt/test/backup"
 gv_rollback_dir: "/opt/test/rollback"
 gv_logs_dir: "/opt/test/logs"
-gv_data_dir: "/opt/test/data"
+gv_data_dir: "/data"
 gv_shared_dir: "/opt/test/shared"
 gv_tmp_dir: "/opt/test/tmp"
 
